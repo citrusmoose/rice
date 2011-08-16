@@ -36,6 +36,18 @@ struct sanitize
     //>::Type Type;
 };
 
+template<>
+struct sanitize<std::string &>
+{
+  typedef std::string Type;
+};
+
+template<>
+struct sanitize<std::string const &>
+{
+  typedef std::string Type;
+};
+
 }
 }
 

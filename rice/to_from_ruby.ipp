@@ -261,7 +261,9 @@ template<>
 inline
 char const * from_ruby<char const *>(Rice::Object x)
 {
-  return Rice::String(x).str().data();
+  // Good until x is changed or destroyed
+  VALUE v(x.value());
+  return (char const *)Rice::protect<char const *>(rb_string_value_cstr, &v);
 }
 
 template<>
@@ -286,9 +288,3 @@ Rice::Object to_ruby<std::string>(std::string const & x)
   return Rice::protect(rb_str_new, x.data(), x.size());
 }
 
-template<>
-inline
-std::string* from_ruby<std::string* >(Rice::Object x)
-{
-  return new std::string(Rice::String(x).str());
-}
